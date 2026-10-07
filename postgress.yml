@@ -32,7 +32,8 @@
 
     # - name: run a command on from localhost
     #   anisble.builtin.shell: "/usr/bin/microdnf update ;/usr/bin/microdnf install postgresql -y"
-
+    - ansible.builtin.shell : "ls -la"
+    
     - name: Load data in db
       ansible.builtin.command: >
         psql -h 192.168.64.41 -U {{ pg_user }} -d patching 
