@@ -4,10 +4,15 @@
   vars:
     pg_user: nrathi
     pg_password: primod123
+    local_csv_path: userdata.csv
+    db_name: patching
+    db_host: 192.168.64.41
+    db_port: 5432
   become: false
   gather_facts: false
   collections:
     - community.postgresql
+
   tasks:
     - name: Add data to remote server
       community.postgresql.postgresql_db:
@@ -30,10 +35,7 @@
         login_password: primod123
         login_host: 192.168.64.41
 
-    # - name: run a command on from localhost
-    #   anisble.builtin.shell: "/usr/bin/microdnf update ;/usr/bin/microdnf install postgresql -y"
-    - ansible.builtin.shell : "ls -la"
-    
+### Working
     # - name: Load data in db
     #   ansible.builtin.command: >
     #     psql -h 192.168.64.41 -U {{ pg_user }} -d patching 
@@ -41,17 +43,37 @@
     #   environment:
     #     PGPASSWORD: "{{ pg_password }}"
     #   no_log: false
+### Not working
+    # - name: Load data in db 
+    #   community.postgresql.postgresql_copy:
+    #    login_db: patching
+    #    login_user: nrathi
+    #    login_password: primod123
+    #    login_port: 5432
+    #    login_host: 192.168.64.41
+    #    dst: userdata
+    #    copy_from: userdata.csv
+    #    options:
+    #      delimiter: ','
+    #      header: true
+    #      format: csv
 
-    - name: Load data in db 
-      community.postgresql.postgresql_copy:
-       login_db: patching
-       login_user: nrathi
-       login_password: primod123
-       login_port: 5432
-       login_host: 192.168.64.41
-       dst: userdata
-       copy_from: userdata.csv
-       options:
-         delimiter: ','
-         header: true
-         format: csv
+    - name: Read local CSV file into memory
+      community.general.read_csv:
+        path: "{{ local_csv_path }}"
+      register: csv_data
+
+    - name: Bulk insert all rows in a single network request
+      community.postgresql.postgresql_query:
+        login_db: "{{ db_name }}"
+        login_host: "{{ db_host }}"
+        login_port: "{{ db_port }}"
+        login_user: "{{ db_user }}"
+        login_password: "{{ db_password }}"
+        query: |
+          INSERT INTO {{ table_name }} (id, username, email)
+          VALUES 
+          {% for row in csv_data.list %}
+          ('{{ row.id }}', '{{ row.username }}', '{{ row.email }}'){% if not loop.last %},{% endif %}
+          {% endfor %};
+      delegate_to: localhost    
