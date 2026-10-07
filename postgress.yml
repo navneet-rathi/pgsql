@@ -3,10 +3,18 @@
   hosts: localhost
   tasks:
     - name: Add data to remote server
-      postgresql_db:
+      community.postgresql.postgresql_db:
         name: patching
         state: present
         login_user: nrathi
         login_password: primod123
         login_host: 192.168.64.41
-  
+
+    - name: Create a table in the remote server
+      community.postgresql.postgresql_table:
+        name: userdata
+        db: patching
+        state: present
+        login_user: nrathi
+        login_password: primod123
+        login_host:
