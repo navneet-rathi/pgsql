@@ -76,6 +76,6 @@
           INSERT INTO {{ table_name }} (id, fname, lname)
           VALUES 
           {% for row in csv_data.list %}
-          ('{{ row.id }}', '{{ row.fname }}', '{{ row.lname }}'){% if not loop.last %},{% endif %}
+          ('{{ row.Id }}', '{{ row.fname }}', '{{ row.lname }}'){% if not loop.last %},{% endif %}
           {% endfor %};
       delegate_to: localhost    
