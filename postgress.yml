@@ -2,8 +2,8 @@
 - name: launch job from localhost and add data to remote server
   hosts: localhost
   vars:
-    pg_user: nrathi
-    pg_password: primod123
+    pg_user: {{ lookup('hashi_vault', 'secret=secret/data/dev/{{ inventory_hostname}}:pg_username')}}
+    pg_password: {{ lookup('hashi_vault', 'secret=secret/data/dev/{{ inventory_hostname}}:pg_password')}}
     local_csv_path: userdata.csv
     db_name: patching
     db_host: 192.168.64.41
@@ -20,8 +20,8 @@
       community.postgresql.postgresql_db:
         name: patching
         state: present
-        login_user: nrathi
-        login_password: primod123
+        login_user: "{{ pg_user }}"
+        login_password: "{{ pg_password }}"
         login_host: 192.168.64.41
 
     - name: Create a table in the remote server
@@ -33,8 +33,8 @@
           - id serial primary key
           - fname text
           - lname text
-        login_user: nrathi
-        login_password: primod123
+        login_user: "{{ pg_user }}"
+        login_password: "{{ pg_password }}"
         login_host: 192.168.64.41
 
 ### Working
@@ -49,8 +49,8 @@
     # - name: Load data in db 
     #   community.postgresql.postgresql_copy:
     #    login_db: patching
-    #    login_user: nrathi
-    #    login_password: primod123
+    #    login_user: "{{ pg_user }}"
+    #    login_password: "{{ pg_password }}"
     #    login_port: 5432
     #    login_host: 192.168.64.41
     #    dst: userdata
