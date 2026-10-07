@@ -1,6 +1,13 @@
 ---
 - name: launch job from localhost and add data to remote server
   hosts: localhost
+  vars:
+    pg_user: nrathi
+    pg_password: primod123
+  become: false
+  gather_facts: false
+  collections:
+    - community.postgresql
   tasks:
     - name: Add data to remote server
       community.postgresql.postgresql_db:
@@ -22,7 +29,20 @@
         login_user: nrathi
         login_password: primod123
         login_host: 192.168.64.41
-  
+
+    - name: run a command on from localhost
+      ansible.builtin.yum:
+        name: postgresql
+        state: present
+
+    - name: Load data in db
+      ansible.builtin.command: >
+        psql -h 192.168.64.41 -U {{ pg_user }} -d patching
+        -c "\copy userdata FROM '/path/on/ansible/host/userdata.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',')"
+      environment:
+        PGPASSWORD: "{{ pg_password }}"
+      no_log: true
+
     - name: Load data in db 
       community.postgresql.postgresql_copy:
        login_db: patching
