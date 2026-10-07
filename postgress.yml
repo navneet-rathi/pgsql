@@ -9,7 +9,7 @@
     db_host: 192.168.64.41
     db_port: 5432
     table_name: userdata
-
+    chunk_size: 50000
   become: false
   gather_facts: false
   collections:
@@ -72,7 +72,7 @@
         login_port: "{{ db_port }}"
         login_user: "{{ pg_user }}"
         login_password: "{{ pg_password }}"
-        chunk_size: 50000
+        
         query: |
           INSERT INTO {{ table_name }} (id, fname, lname)
           VALUES 
