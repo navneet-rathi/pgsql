@@ -31,9 +31,7 @@
         login_host: 192.168.64.41
 
     - name: run a command on from localhost
-      ansible.builtin.yum:
-        name: postgresql
-        state: present
+      anisble.builtin.shell: microdnf install postgresql -y
 
     - name: Load data in db
       ansible.builtin.command: >
