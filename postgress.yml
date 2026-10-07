@@ -13,8 +13,12 @@
     - name: Create a table in the remote server
       community.postgresql.postgresql_table:
         name: userdata
-        db: patching
+        login_db: patching
         state: present
+        columns:
+          - id serial primary key
+          - fname text
+          - lname text
         login_user: nrathi
         login_password: primod123
         login_host: 192.168.64.41
