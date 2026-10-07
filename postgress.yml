@@ -9,6 +9,7 @@
     db_host: 192.168.64.41
     db_port: 5432
     table_name: userdata
+
   become: false
   gather_facts: false
   collections:
@@ -69,8 +70,8 @@
         login_db: "{{ db_name }}"
         login_host: "{{ db_host }}"
         login_port: "{{ db_port }}"
-        login_user: "{{ db_user }}"
-        login_password: "{{ db_password }}"
+        login_user: "{{ pg_user }}"
+        login_password: "{{ pg_password }}"
         query: |
           INSERT INTO {{ table_name }} (id, fname, lname)
           VALUES 
