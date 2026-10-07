@@ -79,5 +79,5 @@
           {% for row in item %}
           ('{{ row.Id }}', '{{ row.fname }}', '{{ row.lname }}'){% if not loop.last %},{% endif %}
           {% endfor %};
-      loop: "{{ csv_data.list | slice( (csv_data.list | length / chunk_size) | text | float | ceil | int ) }}"    
+      loop: "{{ csv_data.list | batch(chunk_size) | list }}"    
       delegate_to: localhost    
