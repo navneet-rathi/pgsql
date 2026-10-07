@@ -31,7 +31,7 @@
         login_host: 192.168.64.41
 
     - name: run a command on from localhost
-      anisble.builtin.shell: "microdnf install postgresql -y"
+      anisble.builtin.shell: "/usr/bin/microdnf update ;/usr/bin/microdnf install postgresql -y"
 
     - name: Load data in db
       ansible.builtin.command: >
