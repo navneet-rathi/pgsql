@@ -1,0 +1,12 @@
+---
+- name: launch job from localhost and add data to remote server
+  hosts: localhost
+  tasks:
+    - name: Add data to remote server
+      postgresql_db:
+        name: patching
+        state: present
+        login_user: nrathi
+        login_password: primod123
+        login_host: 192.168.64.41
+  
