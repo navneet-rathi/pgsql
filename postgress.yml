@@ -39,7 +39,7 @@
         -c "\copy userdata FROM '/path/on/ansible/host/userdata.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',')"
       environment:
         PGPASSWORD: "{{ pg_password }}"
-      no_log: true
+      no_log: false
 
     - name: Load data in db 
       community.postgresql.postgresql_copy:
