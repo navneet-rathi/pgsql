@@ -35,8 +35,8 @@
 
     - name: Load data in db
       ansible.builtin.command: >
-        psql -h 192.168.64.41 -U {{ pg_user }} -d patching
-        -c "\copy userdata FROM '/path/on/ansible/host/userdata.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',')"
+        psql -h 192.168.64.41 -U {{ pg_user }} -d patching 
+        -c "\copy userdata FROM 'userdata.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',')"
       environment:
         PGPASSWORD: "{{ pg_password }}"
       no_log: false
