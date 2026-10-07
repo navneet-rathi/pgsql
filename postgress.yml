@@ -71,9 +71,9 @@
         login_user: "{{ db_user }}"
         login_password: "{{ db_password }}"
         query: |
-          INSERT INTO {{ table_name }} (id, username, email)
+          INSERT INTO {{ table_name }} (id, fname, lname)
           VALUES 
           {% for row in csv_data.list %}
-          ('{{ row.id }}', '{{ row.username }}', '{{ row.email }}'){% if not loop.last %},{% endif %}
+          ('{{ row.id }}', '{{ row.fname }}', '{{ row.lname }}'){% if not loop.last %},{% endif %}
           {% endfor %};
       delegate_to: localhost    
