@@ -42,15 +42,16 @@
         PGPASSWORD: "{{ pg_password }}"
       no_log: false
 
-    # - name: Load data in db 
-    #   community.postgresql.postgresql_copy:
-    #    login_db: patching
-    #    login_user: nrathi
-    #    login_password: primod123
-    #    login_host: 192.168.64.41
-    #    dst: userdata
-    #    copy_from: userdata.csv
-    #    options:
-    #      delimiter: ','
-    #      header: true
-    #      format: csv
+    - name: Load data in db 
+      community.postgresql.postgresql_copy:
+       login_db: patching
+       login_user: nrathi
+       login_password: primod123
+       login_port: 5432
+       login_host: 192.168.64.41
+       dst: userdata
+       copy_from: userdata.csv
+       options:
+         delimiter: ','
+         header: true
+         format: csv
