@@ -75,7 +75,8 @@
         query: |
           INSERT INTO {{ table_name }} (id, fname, lname)
           VALUES 
-          {% for row in csv_data.list %}
+          {% for row in item %}
           ('{{ row.Id }}', '{{ row.fname }}', '{{ row.lname }}'){% if not loop.last %},{% endif %}
           {% endfor %};
+      loop: "{{ csv_data.list | slice( (csv_data.list | length / chunk_size) | text | float | ceil | int ) }}"    
       delegate_to: localhost    
