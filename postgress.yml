@@ -8,6 +8,7 @@
     db_name: patching
     db_host: 192.168.64.41
     db_port: 5432
+    table_name: userdata
   become: false
   gather_facts: false
   collections:
