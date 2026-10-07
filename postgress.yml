@@ -79,5 +79,7 @@
           {% for row in item %}
           ('{{ row.Id }}', '{{ row.fname }}', '{{ row.lname }}'){% if not loop.last %},{% endif %}
           {% endfor %};
-      loop: "{{ csv_data.list | batch(chunk_size) | list }}"    
+      loop: "{{ csv_data.list | batch(chunk_size) | list }}"
+      loop_control:
+        label: "Inserting chunk of {{ chunk_size }} rows"    
       delegate_to: localhost    
